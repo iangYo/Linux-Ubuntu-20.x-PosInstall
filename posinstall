@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# ---------------------------- VARIABLES ---------------------------- #
+URL_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+URL_DISCORD="https://dl.discordapp.net/apps/linux/0.0.16/discord-0.0.16.deb"
+URL_VSCODE_KEY="https://packages.microsoft.com/keys/microsoft.asc"
+
+VSCODE_SOURCE="deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/vscode stable main"
+
+DOWNLOADS_DIRECTORY="$HOME/Downloads/exe"
+
+# ----------------------- REQUIREMENTS ----------------------- #
+# Remove apt locks #
+sudo rm /var/lib/dpkg/lock-frontend ; sudo rm /var/cache/apt/archives/lock ;
+
+mkdir "$DOWNLOADS_DIRECTORY"
+
+# Adding keys #
+wget -c "$URL_VSCODE_KEY" -P "$DOWNLOADS_DIRECTORY" && sudo apt-key add $DOWNLOADS_DIRECTORY/microsoft.asc
+
+# Adding repositories #
+echo "$VSCODE_SOURCE" | sudo tee -a /etc/apt/sources.list.d/vscode.list
+
+sudo apt update
+
+# ------------------------------- MAIN ----------------------------- #
+# Download and install .deb packages #
+wget -c "$URL_CHROME" -P "$DOWNLOADS_DIRECTORY"
+wget -c "$URL_DISCORD" -P "$DOWNLOADS_DIRECTORY"
+
+sudo dpkg -i $DOWNLOADS_DIRECTORY/*.deb
+
+# Installing apt programs #
+sudo apt install code -y
+
+# Install snap packages #
+sudo snap install spotify
+sudo snap install datagrip --classic
+sudo snap install heroku --classic
+
+sudo apt update && sudo apt dist-upgrade
+
+echo "Finished"
