@@ -9,6 +9,11 @@ VSCODE_SOURCE="deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos
 
 DOWNLOADS_DIRECTORY="$HOME/Downloads/exe"
 
+APT_PROGRAMS=(
+  code
+  ubuntu-restricted-extras
+)
+
 # -------------------------- REQUIREMENTS -------------------------- #
 # Remove apt locks #
 sudo rm /var/lib/dpkg/lock-frontend ; sudo rm /var/cache/apt/archives/lock ;
@@ -31,7 +36,9 @@ wget -c "$URL_DISCORD" -P "$DOWNLOADS_DIRECTORY"
 sudo dpkg -i $DOWNLOADS_DIRECTORY/*.deb
 
 # Installing apt programs #
-sudo apt install code -y
+for program in ${APT_PROGRAMS[@]}; do
+  sudo apt install "$program" -y && echo "[SUCCESSFULLY INSTALLED] - $program"
+done
 
 # Install snap packages #
 sudo snap install spotify
