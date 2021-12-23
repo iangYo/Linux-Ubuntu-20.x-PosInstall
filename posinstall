@@ -1,6 +1,6 @@
-#!/bin/bash
+  #!/bin/bash
 
-# ---------------------------- VARIABLES ---------------------------- #
+# ---------------------------- VARIABLES --------------------------- #
 URL_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 URL_DISCORD="https://dl.discordapp.net/apps/linux/0.0.16/discord-0.0.16.deb"
 URL_VSCODE_KEY="https://packages.microsoft.com/keys/microsoft.asc"
@@ -9,7 +9,7 @@ VSCODE_SOURCE="deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos
 
 DOWNLOADS_DIRECTORY="$HOME/Downloads/exe"
 
-# ----------------------- REQUIREMENTS ----------------------- #
+# -------------------------- REQUIREMENTS -------------------------- #
 # Remove apt locks #
 sudo rm /var/lib/dpkg/lock-frontend ; sudo rm /var/cache/apt/archives/lock ;
 
@@ -38,6 +38,9 @@ sudo snap install spotify
 sudo snap install datagrip --classic
 sudo snap install heroku --classic
 
+# ---------------------------- POSINSTALL -------------------------- #
 sudo apt update && sudo apt dist-upgrade
+sudo apt clean
+sudo apt autoremove -y
 
 echo "Finished"
