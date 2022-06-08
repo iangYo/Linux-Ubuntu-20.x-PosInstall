@@ -5,6 +5,7 @@ URL_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd6
 URL_DISCORD="https://dl.discordapp.net/apps/linux/0.0.16/discord-0.0.16.deb"
 URL_VSCODE_KEY="https://packages.microsoft.com/keys/microsoft.asc"
 URL_NVM="https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh"
+URL_JETBRAINS_MONO="https://download.jetbrains.com/fonts/JetBrainsMono-2.242.zip"
 
 VSCODE_SOURCE="deb [arch=amd64,arm64,armhf] https://packages.microsoft.com/repos/vscode stable main"
 
@@ -37,6 +38,12 @@ wget -c "$URL_DISCORD" -P "$DOWNLOADS_DIRECTORY"
 wget -qO- "$URL_NVM" | bash
 
 sudo dpkg -i $DOWNLOADS_DIRECTORY/*.deb
+
+# Download and install JetBrains Mono font #
+wget -c "$URL_JETBRAINS_MONO" -P "$DOWNLOADS_DIRECTORY"
+unzip "$DOWNLOADS_DIRECTORY"/JetBrainsMono-2.242.zip -d $HOME/Downloads/JetBrainsMono
+mkdir $HOME/.local/share/fonts
+cp $HOME/Downloads/JetBrainsMono/fonts/ttf/*.ttf $HOME/.local/share/fonts
 
 # Installing apt programs #
 for program in ${APT_PROGRAMS[@]}; do
