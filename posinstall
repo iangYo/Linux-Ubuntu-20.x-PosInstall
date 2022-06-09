@@ -1,6 +1,9 @@
   #!/bin/bash
 
 # ---------------------------- VARIABLES --------------------------- #
+GREEN="\033[0;32m"
+DEFAULT="\033[0m"
+
 URL_CHROME="https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 URL_DISCORD="https://dl.discordapp.net/apps/linux/0.0.16/discord-0.0.16.deb"
 URL_VSCODE_KEY="https://packages.microsoft.com/keys/microsoft.asc"
@@ -29,7 +32,7 @@ wget -c "$URL_VSCODE_KEY" -P "$DOWNLOADS_DIRECTORY" && sudo apt-key add $DOWNLOA
 # Adding repositories #
 echo "$VSCODE_SOURCE" | sudo tee -a /etc/apt/sources.list.d/vscode.list
 
-sudo apt update
+# sudo apt update
 
 # ------------------------------- MAIN ----------------------------- #
 # Download and install .deb packages #
@@ -39,27 +42,39 @@ wget -qO- "$URL_NVM" | bash
 
 sudo dpkg -i $DOWNLOADS_DIRECTORY/*.deb
 
+echo -e "${GREEN}[SUCCESSFULLY INSTALLED] - Chrome${DEFAULT}"
+echo -e "${GREEN}[SUCCESSFULLY INSTALLED] - Discord${DEFAULT}"
+echo -e "${GREEN}[SUCCESSFULLY INSTALLED] - nvm${DEFAULT}"
+
 # Download and install JetBrains Mono font #
 wget -c "$URL_JETBRAINS_MONO" -P "$DOWNLOADS_DIRECTORY"
 unzip "$DOWNLOADS_DIRECTORY"/JetBrainsMono-2.242.zip -d $HOME/Downloads/JetBrainsMono
 mkdir $HOME/.local/share/fonts
 cp $HOME/Downloads/JetBrainsMono/fonts/ttf/*.ttf $HOME/.local/share/fonts
 
+echo -e "${GREEN}[SUCCESSFULLY INSTALLED] - JetBrainsMono${DEFAULT}"
+
 # Installing apt programs #
 for program in ${APT_PROGRAMS[@]}; do
-  sudo apt install "$program" -y && echo "[SUCCESSFULLY INSTALLED] - $program"
+  sudo apt install "$program" -y && echo -e "${GREEN}[SUCCESSFULLY INSTALLED] - $program${DEFAULT}"
 done
+
+# Setup docker #
+sudo usermod -aG docker ian
 
 # Install snap packages #
 sudo snap install spotify
 sudo snap install datagrip --classic
 sudo snap install heroku --classic
 
+echo -e "${GREEN}[SUCCESSFULLY INSTALLED] - Spotify${DEFAULT}"
+echo -e "${GREEN}[SUCCESSFULLY INSTALLED] - Datagrip${DEFAULT}"
+echo -e "${GREEN}[SUCCESSFULLY INSTALLED] - heroku${DEFAULT}"
+
 # ---------------------------- POSINSTALL -------------------------- #
 sudo apt update && sudo apt dist-upgrade
 sudo apt clean
 sudo apt autoremove -y
-
-rm -r exe JetBrainsMono
+rm -r JetBrainsMono exe
 
 echo "Finished"
